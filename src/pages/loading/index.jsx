@@ -8,8 +8,9 @@ const LoadingPage = ({ className = "", forceLogoOnly, redirect = true, redirectP
   React.useEffect(redirectEffect, [])
 
   return (
-    <div className={`background-dark absolute vh-100 z-index-20 no-touch ${className}`} style={{width: '100%', maxWidth: '1920px'}}>
+    <div className={`loading-page relative vh-100 d-flex justify-content-center align-items-center z-index-20 no-touch ${className}`} style={{width: '100%', maxWidth: '1920px'}}>
       <div className="absolute-center">
+        Loading
       </div>
     </div>
   )

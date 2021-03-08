@@ -1,1 +1,22 @@
-{}
+{
+    
+    "folder": "models/2021",
+    "model": [
+        {
+            "id": "test-cube",
+            "slug": "test-cube",
+            "act": "1",
+            "panoramas": [
+                {
+                    "id": 1,
+                    "name": "cube",
+                    "initialPosition": [0,0,85],
+                    "initialCompass": [0, 0, 0],
+                    "hotspots": []
+                }
+            ]
+            
+        }
+    ]
+    
+}

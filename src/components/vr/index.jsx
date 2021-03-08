@@ -11,6 +11,8 @@ import LoadingPage from '../../pages/loading'
 import VRMain from './main'
 import VRControls from './controls'
 import VRHotspot from './hotspot'
+import { Suspense } from 'react'
+import { Html } from '@react-three/drei'
 
 const FOV = window.visualViewport.width < 600 ? 90 : 60
 
@@ -38,10 +40,11 @@ const VRComponent = ({ vr = false, panorama, previewPanorama, hotspots = [], mod
 
     const opacityStyle = loading ? "opacity-05" : "preview-invisible"
 
+    console.log("path", panorama)
+
     return (
         <div className="fullscreen">
-            {<LoadingPage className={opacityStyle} forceLogoOnly redirect={false} />}
-            {loading && <img className={`absolute-100 h-100 w-100 overflow-hidden zindex-10`} src={previewPanorama} alt="loading-screen" />}
+            {/* {loading && <img className={`absolute-100 h-100 w-100 overflow-hidden zindex-10`} src={previewPanorama} alt="loading-screen" />} */}
             <div className="gradient-fullscreen" />
             {vr && (
                 <VRCanvas onCreated={createVRCanvas} camera={camera} pixelRatio={window.devicePixelRatio}>
@@ -51,11 +54,20 @@ const VRComponent = ({ vr = false, panorama, previewPanorama, hotspots = [], mod
                 </VRCanvas>
             )}
             {!vr && (
-                <Canvas camera={camera} pixelRatio={window.devicePixelRatio}>
-                    <VRControls initialPosition={initialPosition} />
-                    {hotspots?.filter(x => x.geometry === 'square').map((hotspot, i) => (<VRHotspot square history={history} hotspot={hotspot} key={i} />))}
-                    {hotspots?.filter(x => x.geometry !== 'square').map((hotspot, i) => (<VRHotspot circle history={history} hotspot={hotspot} key={i} />))}
-                    <VRMain map={panorama} loaded={loaded} setLoaded={setLoaded} />
+                <Canvas camera={camera} pixelRatio={window.devicePixelRatio}  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    zIndex: -10
+                  }} invalidateFrameloop={true}>
+                    <Suspense fallback={<Html><LoadingPage className={opacityStyle} forceLogoOnly redirect={false} /></Html>}>
+                        <VRControls />
+                        {hotspots?.filter(x => x.geometry === 'square').map((hotspot, i) => (<VRHotspot square history={history} hotspot={hotspot} key={i} />))}
+                        {hotspots?.filter(x => x.geometry !== 'square').map((hotspot, i) => (<VRHotspot circle history={history} hotspot={hotspot} key={i} />))}
+                        <VRMain path={panorama} />
+                    </Suspense>
                 </Canvas>
             )}
         </div>

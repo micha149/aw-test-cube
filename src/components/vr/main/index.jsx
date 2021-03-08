@@ -1,17 +1,38 @@
 import * as THREE from 'three'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useLoader, useThree } from 'react-three-fiber';
+import { CubeTextureLoader } from 'three';
 
-const VRMain = React.memo(({ loaded, map, setLoaded }) => {
-    if (!map) return <mesh />
-    const geometry = new THREE.SphereBufferGeometry(500, 60, 40);
-    const texture = new THREE.TextureLoader().load(map, () => setLoaded && setLoaded(true))
-    texture.minFilter = THREE.LinearFilter
-    texture.magFilter = THREE.LinearFilter
-    const debugXYZ = false
+
+
+const VRMain = React.memo(({ path }) => {
+    const addURLPrefix = (x) => `${path}${x}`;
+
+    const textures = [ 'px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png' ].map(addURLPrefix)
+    const [cubeMapTexture] = useLoader(CubeTextureLoader, [textures]);
+    
+    const {
+      scene
+    } = useThree();
+
+    useEffect(() => {
+        const previous = scene.background;
+        scene.background = cubeMapTexture;
+        
+        scene.background.minFilter = THREE.LinearFilter
+        scene.background.magFilter = THREE.LinearFilter
+
+        return () => {
+          scene.background = previous;
+        };
+    }, [cubeMapTexture, scene]);
+
     return (
-        <mesh geometry={geometry} position={[0, 0, 0]} scale={[1, 1, -1]} onPointerMove={(e) => debugXYZ}>
-            <meshBasicMaterial visible={loaded} map={texture} side={THREE.BackSide} opacity={1} transparent={false} precision='highp' needsUpdate={false} />
-        </mesh>)
+        <React.Fragment>
+            
+        </React.Fragment>
+    )
+
 })
 
 export default VRMain

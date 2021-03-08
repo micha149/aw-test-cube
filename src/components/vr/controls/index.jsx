@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { extend, useFrame, useThree } from 'react-three-fiber'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
@@ -10,10 +10,24 @@ extend({ OrbitControls })
 const VRControls = () => {
     const mounted = React.useRef()
     const orbitRef = React.useRef()
-    const { gl, camera } = useThree()
+    const {
+        camera,
+        invalidate,
+        gl
+      } = useThree();
+    
     useFrame(() => {
-        orbitRef.current && orbitRef.current.update()
-    })
+        if (orbitRef.current) {
+          return orbitRef.current.update();
+        }
+        return false;
+      });
+
+      useEffect(() => {
+        if (orbitRef.current) {
+          orbitRef.current.addEventListener("change", invalidate);
+        }
+      }, [invalidate, camera]);
 
     if (orbitRef.current && mounted.current !== true) {
         window.controls = orbitRef.current;
@@ -36,15 +50,6 @@ const VRControls = () => {
     return (<orbitControls
         ref={orbitRef}
         args={[camera, gl.domElement]}
-        maxPolarAngle={2}
-        minPolarAngle={1}
-        minDistance={FOV}
-        maxDistance={FOV}
-        enableKeys={true}
-        enableZoom={true}
-        enablePan={true}
-        enableDamping={true}
-        dampingFactor={0.06}
         autoRotate={false}
         rotateSpeed={SPEED}
     />)

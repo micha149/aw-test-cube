@@ -3,8 +3,8 @@ import { useParams } from 'react-router';
 import { connect } from 'react-redux';
 import { VR } from './../../components'
 import { updateCurrentAct } from './../../effects/actions'
+import { ASSETS_FOLDER } from '../../utils';
 const enviroments = require('./../../assets/mock-data/enviroment.json')
-const acts = require('./../../assets/mock-data/act.json')
 
 function usePrevious(value) { const ref = React.useRef(); React.useEffect(() => { ref.current = value }); return ref.current; }
 
@@ -16,7 +16,8 @@ const VRPage = ({ updateCurrentAct }) => {
   const [currentPanorama, setCurrentPanorama] = useState()
   const [vr, setVR] = useState(false)
 
-  const searchModel = (id) => (enviroments[0].model.find((x) => x.id === id))
+  console.log("enviroments", enviroments)
+  const searchModel = (id) => (enviroments && enviroments.model.find((x) => x.id === id))
   const searchPanorama = (model, pano) => (model?.panoramas.find((x) => String(x.id) === String(pano)))
 
   useEffect(() => {
@@ -25,16 +26,7 @@ const VRPage = ({ updateCurrentAct }) => {
     setCurrentPanorama(searchPanorama(_model, pano))
   }, [pano, model])
 
-  useEffect(() => {
-    if (currentModel && currentModel.act !== undefined) {
-      let act = acts.find(x => x.act === currentModel.act)
-      updateCurrentAct(act)
-
-    }
-  }, [currentModel, updateCurrentAct])
-
-  const path = (currentPanorama && currentModel && enviroments) && require(`./../../${enviroments[0].folder}/${currentModel.id}/${currentPanorama.name}`)
-  const previewPath = (currentPanorama && currentModel && enviroments) && require(`./../../${enviroments[0].folder}/${currentModel.id}/${currentPanorama.previewName}`)
+  const path = (currentPanorama && currentModel && enviroments) && `${ASSETS_FOLDER}/${enviroments.folder}/${currentModel.id}/${currentPanorama.name}/`
   const prevPath = usePrevious(path)
 
   return (
@@ -45,7 +37,7 @@ const VRPage = ({ updateCurrentAct }) => {
         key={path}
         rotate={false}
         panorama={path}
-        previewPanorama={previewPath}
+        previewPanorama={null}
         prevPath={prevPath}
         model={currentModel}
         hotspots={currentPanorama?.hotspots}
