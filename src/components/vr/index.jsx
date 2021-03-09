@@ -56,7 +56,7 @@ const VRComponent = ({ vr = false, panorama, previewPanorama, hotspots = [], mod
                 </VRCanvas>
             )}
             {!vr && (
-                <Canvas camera={camera} pixelRatio={window.devicePixelRatio}  style={{
+                <Canvas camera={camera} pixelRatio={window.devicePixelRatio} colorManagement={false} style={{
                     position: "absolute",
                     top: 0,
                     left: 0,
