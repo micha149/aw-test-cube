@@ -13,6 +13,7 @@ import VRControls from './controls'
 import VRHotspot from './hotspot'
 import { Suspense } from 'react'
 import { Html } from '@react-three/drei'
+import VRLoadTexture from './load-texture'
 
 const FOV = window.visualViewport.width < 600 ? 90 : 60
 
@@ -50,6 +51,7 @@ const VRComponent = ({ vr = false, panorama, previewPanorama, hotspots = [], mod
                 <VRCanvas onCreated={createVRCanvas} camera={camera} pixelRatio={window.devicePixelRatio}>
                     <VRControls initialPosition={initialPosition} />
                     <VRMain map={panorama} loaded={true} setLoaded={() => { }} />
+                    <VRLoadTexture path={panorama} />
                     <DefaultXRControllers />
                 </VRCanvas>
             )}
@@ -66,6 +68,7 @@ const VRComponent = ({ vr = false, panorama, previewPanorama, hotspots = [], mod
                         <VRControls />
                         {hotspots?.filter(x => x.geometry === 'square').map((hotspot, i) => (<VRHotspot square history={history} hotspot={hotspot} key={i} />))}
                         {hotspots?.filter(x => x.geometry !== 'square').map((hotspot, i) => (<VRHotspot circle history={history} hotspot={hotspot} key={i} />))}
+                        {/* <VRLoadTexture path={panorama} /> */}
                         <VRMain path={panorama} />
                     </Suspense>
                 </Canvas>

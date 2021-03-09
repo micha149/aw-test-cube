@@ -12,7 +12,28 @@
                     "name": "cube",
                     "initialPosition": [0,0,85],
                     "initialCompass": [0, 0, 0],
-                    "hotspots": []
+                    "hotspots": [
+                        {
+                            "to": "/vr/showroom/10", "position": ["322", "-179", "302"], "rotation": [1.5707,0,3.14],
+                            "type": "panorama-spot", "hover": true, "size": [50,50], "hoverSize": [62,62]
+                        },
+                        {
+                            "to": "/vr/showroom/9", "position": ["396", "-96", "100"], "rotation": [1.5707,0,3.14],
+                            "type": "panorama-spot", "hover": true, "size": [50,50], "hoverSize": [62,62]
+                        },
+                        {
+                            "to": "/vr/showroom/18", "position": ["58", "-114", "453"], "rotation": [1.5707,0,3.14],
+                            "type": "panorama-spot", "hover": true, "size": [50,50], "hoverSize": [62,62]
+                        },
+                        {
+                            "to": "/vr/showroom/14", "position": ["-217", "-157", "401"], "rotation": [1.5707,0,3.14],
+                            "type": "panorama-spot", "hover": true, "size": [50,50], "hoverSize": [62,62]
+                        },
+                        {
+                            "to": "/vr/showroom/19", "position": ["-245", "-94", "405"], "rotation": [1.5707,0,3.14],
+                            "type": "panorama-spot", "hover": true, "size": [50,50], "hoverSize": [62,62]
+                        }
+                    ]
                 }
             ]
             

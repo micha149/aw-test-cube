@@ -1,31 +1,57 @@
-import * as THREE from 'three'
 import React from 'react'
-import { Walkspot } from '../../../assets'
+import { Html } from '@react-three/drei'
+import { HotspotOutdoorIcon } from '../../icons'
 
 
-const VRHotspot = React.memo(({ square, circle, history, hotspot }) => {
+const VRHotspot = React.memo(({ 
+    history, hotspot, locale
+}) => {
     const [hovered, setHover] = React.useState(false)
-    const onClickHotspot = (() => hotspot.to && history && history.push(hotspot.to, history.location.pathname))
+    const onOverHotspot = (() => hotspot.hover && setHover(false))
+    const onOutHotspot = (() => hotspot.hover && setHover(false))
+    const onClickHotspot = (() => {
+        hotspot.to && history && history.push(hotspot.to, history.location.pathname)
+    })
     const scale = hovered ? hotspot.hoverSize : (hotspot.size ?? [-50, 50])
     const position = hotspot.position ?? [0, 0, 0]
     const rotation = hotspot.rotation ?? [0, 0, 0]
 
-    if (hotspot.type === "panorama-spot") return (
+    if(hovered){
+        document.getElementsByTagName('body')[0].className = "pointesr"
+    }else{
+        document.getElementsByTagName('body')[0].className = ""
+    }
+
+    return (
         <mesh
             key={hotspot.name}
-            className="canvas-hover"
-            onPointerOver={(e) => { !hovered && setHover(true) }}
-            onPointerOut={(e) => { hovered && setHover(false) }}
-            onPointerDown={onClickHotspot}
+            onPointerOver={onOverHotspot}
+            onPointerOut={onOutHotspot}
+            className={`canvas-hover`}
             position={position}
             rotation={rotation}
             scale={scale}
         >
-            {square && <planeBufferGeometry attach="geometry" args={[1, 1]} />}
-            {circle && <circleGeometry attach="geometry" args={[0.5, 50]} />}
-            <meshBasicMaterial map={new THREE.TextureLoader().load(Walkspot)} side={THREE.DoubleSide} blending={THREE.AdditiveBlending} opacity={hovered ? 1 : 0.4} transparent={true} needsUpdate={false} />
+            <Html scaleFactor={hotspot.scale || 1000} zIndexRange={!hovered ? [3,0] : [3,0]} center={true}>
+                {(hotspot.type === "panorama-spot") && (
+                    <div 
+                        className={`info-icon ${hovered ? 'hovered': ''}`} 
+                        onClick={() => {
+                            onClickHotspot()
+                            hotspot.hover && setHover(!hovered)
+                        }}
+                        onPointerOver={(e) => { !hovered && setHover(true) }}
+                        onPointerOut={(e) => { hovered && setHover(false) }}
+                    >
+                        <HotspotOutdoorIcon />
+                    </div>
+                )}
+
+            
+            </Html>
         </mesh>
     )
+
 })
 
 export default VRHotspot
