@@ -1,5 +1,5 @@
 {
-    
+
     "folder": "models/2021",
     "model": [
         {
@@ -14,7 +14,7 @@
                     "initialCompass": [0, 0, 0],
                     "hotspots": [
                         {
-                            "to": "/vr/test-cube/2", "position": ["322", "-179", "302"], "rotation": [1.5707,0,3.14],
+                            "to": "/vr/test-cube/2", "position": ["-250", "58.692343684215544", "-230.266423117328"], "rotation": [1.5707,0,3.14],
                             "type": "panorama-spot", "hover": true, "size": [50,50], "hoverSize": [62,62]
                         },
                         {
@@ -48,8 +48,8 @@
                     "initialCompass": [0, 0, 0]
                 }
             ]
-            
+
         }
     ]
-    
+
 }
